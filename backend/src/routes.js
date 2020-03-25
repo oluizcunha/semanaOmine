@@ -1,15 +1,14 @@
 const express = require('express');
 
-const app = express();
-app.use(express.json());
+const routes = express.Router();
 
-app.get('/', (request, response) => {
+routes.get('/', (request, response) => {
   return response.json({
     evento: 'oii',
   });
 });
 
-app.get('/users', (request, response) => {
+routes.get('/users', (request, response) => {
   //Mostra o que ta dentro da url (http://localhost:3333/users?nome=luiz)
   const params = request.query;
 
@@ -20,7 +19,7 @@ app.get('/users', (request, response) => {
   });
 });
 
-app.get('/users/:id', (request, response) => {
+routes.get('/users/:id', (request, response) => {
   const params = request.params;
 
   console.log(params);
@@ -30,7 +29,7 @@ app.get('/users/:id', (request, response) => {
   });
 });
 
-app.post('/users', (request, response) => {
+routes.post('/users', (request, response) => {
   const body = request.body;
 
   console.log(body);
@@ -39,4 +38,4 @@ app.post('/users', (request, response) => {
   });
 });
 
-app.listen(3333);
+module.exports = routes;
