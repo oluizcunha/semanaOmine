@@ -1,0 +1,5 @@
+Criando migrations
+npx knex migrate:make create_ongs
+
+Dando rollback
+npx knex migrete:rollback

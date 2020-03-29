@@ -19,6 +19,8 @@ routes.get('/users', (request, response) => {
   });
 });
 
+//Passando informações no url
+
 routes.get('/users/:id', (request, response) => {
   const params = request.params;
 
@@ -28,6 +30,8 @@ routes.get('/users/:id', (request, response) => {
     Mensagem: params,
   });
 });
+
+//Passado com ? apos o fim
 
 routes.post('/users', (request, response) => {
   const body = request.body;
