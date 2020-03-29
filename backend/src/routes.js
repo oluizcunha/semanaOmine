@@ -1,45 +1,33 @@
 const express = require('express');
-
 const routes = express.Router();
 
-routes.get('/', (request, response) => {
-  return response.json({
-    evento: 'oii',
-  });
+const connection = require('./database/connection');
+
+const crypto = require('crypto');
+
+routes.get('/ongs', async (request, response) => {
+  const ongs = await connection('ongs').select('*');
+
+  return response.json(ongs);
 });
 
-routes.get('/users', (request, response) => {
-  //Mostra o que ta dentro da url (http://localhost:3333/users?nome=luiz)
-  const params = request.query;
+//Async pois vai esperar realizar a conexão no banco antes de executar o restante dos códigos
+routes.post('/ongs', async (request, response) => {
+  const { name, email, whatsapp, city, uf } = request.body;
+  console.log(name, email, whatsapp, city, uf);
 
-  console.log(params);
+  const id = crypto.randomBytes(4).toString('HEX');
 
-  return response.json({
-    mensagem: params,
+  await connection('ongs').insert({
+    id,
+    name,
+    email,
+    whatsapp,
+    city,
+    uf,
   });
-});
 
-//Passando informações no url
-
-routes.get('/users/:id', (request, response) => {
-  const params = request.params;
-
-  console.log(params);
-
-  return response.json({
-    Mensagem: params,
-  });
-});
-
-//Passado com ? apos o fim
-
-routes.post('/users', (request, response) => {
-  const body = request.body;
-
-  console.log(body);
-  return response.json({
-    Mensagens: body,
-  });
+  return response.json({ id });
 });
 
 module.exports = routes;

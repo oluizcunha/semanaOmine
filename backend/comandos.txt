@@ -3,3 +3,6 @@ npx knex migrate:make create_ongs
 
 Dando rollback
 npx knex migrete:rollback
+
+Executar migrations
+npx knex  migrate:latest
