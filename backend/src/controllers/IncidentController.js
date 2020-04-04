@@ -16,7 +16,21 @@ module.exports = {
   },
 
   async index(request, response) {
-    const incidents = await connection('incidents').select('*');
+    //Caso ele não tenha parametro de paginação ele insere por padrão o  1
+    const { page = 1 } = request.query;
+
+    //Contando quantos registros existem
+    const [count] = await connection('incidents').count();
+    console.log(count);
+
+    //Definindo as primeiras paginas .offset((page - 1) * 5)
+    const incidents = await connection('incidents')
+      .limit(5)
+      .offset((page - 1) * 5)
+      .select('*');
+
+    //Devolvendo pelo cabeçalho da resposta o total de registros (para uso do front end)
+    response.header('X-Total-Count', count['count(*)']);
     return response.json(incidents);
   },
 
@@ -33,9 +47,7 @@ module.exports = {
       return response.status(401).json({ error: 'operação não permitida' });
     }
 
-    await connection('incidents')
-      .where('id', id)
-      .delete();
+    await connection('incidents').where('id', id).delete();
 
     return response.status(204).send();
   },
