@@ -25,9 +25,18 @@ module.exports = {
 
     //Definindo as primeiras paginas .offset((page - 1) * 5)
     const incidents = await connection('incidents')
+      .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
       .limit(5)
-      .offset((page - 1) * 5)
-      .select('*');
+      .offset((page - 1) * 5) //Definindo as primeiras paginas .offset((page - 1) * 5)
+      //inserindo join na tabela para poder trazer todos os dados dos incidents
+      .select([
+        'incidents.*',
+        'ongs.name',
+        'ongs.email',
+        'ongs.whatsapp',
+        'ongs.city',
+        'ongs.uf',
+      ]);
 
     //Devolvendo pelo cabeçalho da resposta o total de registros (para uso do front end)
     response.header('X-Total-Count', count['count(*)']);
