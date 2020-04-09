@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 
 import api from '../../services/api';
@@ -12,6 +12,7 @@ export default function Profile() {
   const [incidents, setIncidents] = useState([]);
   const ongName = localStorage.getItem('ongName');
   const ongId = localStorage.getItem('ongId');
+  const history = useHistory();
 
   // Use Effect é para executar uma ação em determinados casos(mudaça de dados do segundo parametro )
   useEffect(() => {
@@ -38,6 +39,11 @@ export default function Profile() {
     }
   }
 
+  function handleLogout() {
+    localStorage.clear();
+    history.push('/');
+  }
+
   return (
     <div className="profile-container">
       <header>
@@ -46,7 +52,7 @@ export default function Profile() {
         <Link className="button" to="/incidents/new">
           Cadastrar novo caso
         </Link>
-        <button type="button">
+        <button onClick={handleLogout} type="button">
           <FiPower size={18} color="#e02041" />
         </button>
       </header>
