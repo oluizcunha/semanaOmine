@@ -31,6 +31,8 @@ export default function Profile() {
       await api.delete(`incidents/${id}`, {
         headers: { Authorization: ongId },
       });
+
+      setIncidents(incidents.filter((incident) => incident.id != id));
     } catch (err) {
       alert(err);
     }
