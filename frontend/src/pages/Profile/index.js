@@ -26,6 +26,16 @@ export default function Profile() {
       });
   }, [ongId]);
 
+  async function handleDeleteIncident(id) {
+    try {
+      await api.delete(`incidents/${id}`, {
+        headers: { Authorization: ongId },
+      });
+    } catch (err) {
+      alert(err);
+    }
+  }
+
   return (
     <div className="profile-container">
       <header>
@@ -56,7 +66,12 @@ export default function Profile() {
                 currency: 'BRL',
               }).format(incident.value)}
             </p>
-            <button type="button">
+
+            {/* Deverá ser um arrow funcion, pois caso não faça isso, ele vai devolver realizando a ação sempre que executar */}
+            <button
+              onClick={() => handleDeleteIncident(incident.id)}
+              type="button"
+            >
               <FiTrash2 size={20} color="#a8a8b3" />
             </button>
           </li>
