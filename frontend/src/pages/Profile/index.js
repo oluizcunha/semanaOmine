@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 
@@ -8,6 +8,9 @@ import logoImg from '../../assets/logo.svg';
 
 export default function Profile() {
   const ongName = localStorage.getItem('ongName');
+
+  // Use Effect é para executar uma ação em determinados casos(mudaça de dados do segundo parametro )
+  useEffect(() => {}, []);
 
   return (
     <div className="profile-container">
