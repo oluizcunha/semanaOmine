@@ -1,16 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
+
+import api from '../../services/api';
 
 import './styles.css';
 
 import logoImg from '../../assets/logo.svg';
 
 export default function Profile() {
+  const [incidents, setIncidents] = useState([]);
   const ongName = localStorage.getItem('ongName');
+  const ongId = localStorage.getItem('ongId');
 
   // Use Effect é para executar uma ação em determinados casos(mudaça de dados do segundo parametro )
-  useEffect(() => {}, []);
+  useEffect(() => {
+    api
+      .get('profile', {
+        headers: {
+          Authorization: ongId,
+        },
+      })
+      .then((response) => {
+        setIncidents(response.data);
+      });
+  }, [ongId]);
 
   return (
     <div className="profile-container">
@@ -27,47 +41,21 @@ export default function Profile() {
 
       <h1>Casos Cadastrados</h1>
       <ul>
-        <li>
-          <strong>Caso:</strong>
-          <p>Casoteste</p>
+        {incidents.map((incident) => (
+          <li key={incident.id}>
+            <strong>Caso:</strong>
+            <p>{incident.title}</p>
 
-          <strong>Descricao:</strong>
-          <p>DescricaoTeste</p>
+            <strong>Descricao:</strong>
+            <p>{incident.description}</p>
 
-          <strong>Valor:</strong>
-          <p>R$Algum</p>
-          <button type="button">
-            <FiTrash2 size={20} color="#a8a8b3" />
-          </button>
-        </li>
-
-        <li>
-          <strong>Caso:</strong>
-          <p>Casoteste</p>
-
-          <strong>Descricao:</strong>
-          <p>DescricaoTeste</p>
-
-          <strong>Valor:</strong>
-          <p>R$Algum</p>
-          <button type="button">
-            <FiTrash2 size={20} color="#a8a8b3" />
-          </button>
-        </li>
-
-        <li>
-          <strong>Caso:</strong>
-          <p>Casoteste</p>
-
-          <strong>Descricao:</strong>
-          <p>DescricaoTeste</p>
-
-          <strong>Valor:2</strong>
-          <p>R$Algum</p>
-          <button type="button">
-            <FiTrash2 size={20} color="#a8a8b3" />
-          </button>
-        </li>
+            <strong>Valor:</strong>
+            <p>{incident.value}</p>
+            <button type="button">
+              <FiTrash2 size={20} color="#a8a8b3" />
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   );
